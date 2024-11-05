@@ -9,7 +9,7 @@ type Params = {
 
 export default async function RecommendedGames({ params }: Params) {
 
-    const { user } = params
+    const { user } = await params
 
     return (
         <div className="container mx-auto">
