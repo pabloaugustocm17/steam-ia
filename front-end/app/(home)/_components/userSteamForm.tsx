@@ -11,7 +11,6 @@ export default function UserSteamForm() {
 
     function handleSubmit(event: FormEvent<HTMLFormElement>){
         event.preventDefault()
-
         const data = new FormData(event.currentTarget)
         const user = data.get('user')?.toString()
         
