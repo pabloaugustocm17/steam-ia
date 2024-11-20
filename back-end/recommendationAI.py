@@ -26,7 +26,7 @@ class RecommendationIA:
         self._initialized = True 
 
         self.data = pd.read_csv(dataset_path)
-        columns_needed = ['AppID', 'Name', 'Required age', 'Supported languages', 'Header image', 'Publishers', 'Categories', 'Genres', 'Tags', 'Screenshots', 'Movies']
+        columns_needed = ['AppID', 'Name', 'Required age', "About the game", 'Supported languages', 'Header image', 'Publishers', 'Categories', 'Genres', 'Tags', 'Screenshots', 'Movies']
         self.simple_data = self.data[columns_needed].copy()
         self.simple_data.rename(columns={"Name": "Release date", "AppID": "Name"}, inplace=True)
         self.simple_data.fillna('', inplace=True)
