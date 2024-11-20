@@ -1,10 +1,19 @@
 from fastapi import FastAPI, HTTPException
 import requests
 from recommendationAI import RecommendationIA
+from fastapi.middleware.cors import CORSMiddleware
 
-STEAM_API_KEY = ""
+STEAM_API_KEY = "6DA6EEBBF36DC353235882454540220C"
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 def get_steam_id(username):
     url = f"http://api.steampowered.com/ISteamUser/ResolveVanityURL/v1/"
@@ -13,12 +22,13 @@ def get_steam_id(username):
         "vanityurl": username
     }
     response = requests.get(url, params=params)
+    
     data = response.json()
-
     if data['response']['success'] == 1:
         return data['response']['steamid']
     else:
         return None
+    
 
 def get_owned_games(steam_id):
     url = f"https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/"
@@ -73,26 +83,24 @@ def get_user_games_recommendations(username: str):
         raise HTTPException(status_code=404, detail="Usuário não encontrado")
     
     games = get_owned_games(steam_id)
-    
+   
     if games is None:
         raise HTTPException(status_code=404, detail="Nenhum jogo encontrado ou o perfil é privado")
     
     categories = []
     genres = []
-    
-    for game in games:
-        genres.append(game["genre"])
 
-    #games_with_genres = []
+    games_with_genres = []
    
-    #for game in games:
-    #    genre = get_game_genres(game['appid'])
+    for game in games:
+       genre = get_game_genres(game['appid'])
+       genres.append(genre)
     #    games_with_genres.append({
     #        "name": game['name'],
     #        "playtime_forever": game['playtime_forever'],
     #        "genre": genre
     #    })
     
-    #return games_with_genres
+    
 
-    return recommendation_system.recommend(categories=categories, genres=genres, top_n=5)
+    return recommendation_system.recommend(categories=categories, genres=genres, top_n=9)
