@@ -1,0 +1,138 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{STEAM - AI: Sistema de recomendação de jogos\\
+}
+
+\author{\IEEEauthorblockN{1\textsuperscript{st} Arthur A. M. Menezes}
+\IEEEauthorblockA{\textit{Puc - Minas} \\
+Belo Horizonte, MG \\
+aammenezes@sga.pucminas.com.br}
+
+\and
+
+\IEEEauthorblockN{2\textsuperscript{nd} Pablo A. C. Magalhães}
+\IEEEauthorblockA{\textit{Puc - Minas} \\
+Belo Horizonte, MG \\
+pabloaugustocm@gmail.com}
+}
+
+\maketitle
+
+\begin{abstract}
+Este trabalho apresenta um sistema de recomendação de jogos  desenvolvido para analisar bibliotecas de usuários da \textit{Steam} e sugerir títulos que se adaptam ao que o usuário normalmente consome. Utilizando o modelo TF-IDF e tecnologias como \textit{Next.js} e \textit{FastAPI}, o sistema utiliza dados da \textit{API} da \textit{Steam} para gerar recomendações com base em gêneros dos jogos. Dados de um conjunto extenso extraído da plataforma \textit{Kaggle} foram utilizados para treinar a inteligência artificial. Os resultados demonstram a solução em propor títulos semelhantes aos consumidos.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Recomendações, inteligência artificial, mineração de dados, jogos digitais
+\end{IEEEkeywords}
+
+\section{Introduction}
+
+Com o crescimento exponencial da indústria de jogos digitais e a expansão das plataformas de distribuição online, como a Steam, Epic Games e GoG, a personalização da experiência do usuário tornou-se um fator central. Estima-se que o mercado de jogos digitais alcance valores superiores a 300 bilhões de dólares até 2026, reforçando a competitividade e a necessidade de ferramentas que ajudem usuários a explorar conteúdos relevantes \cite{c1}. A vasta quantidade de títulos disponíveis apresenta desafios tanto para os jogadores, que precisam encontrar jogos alinhados às suas preferências, quanto para os desenvolvedores, que buscam se destacar em um mercado saturado \cite{c2}.
+
+A inteligência artificial (IA) tem desempenhado um papel transformador em sistemas de recomendação, sendo aplicada em diversos contextos, como plataformas de streaming e e-commerce \cite{c3}. No domínio dos jogos, soluções baseadas em IA podem analisar grandes volumes de dados, identificar padrões e fornecer recomendações personalizadas para melhorar a experiência do usuário \cite{c4}. Este artigo propõe um sistema de recomendação de jogos, implementado como um website utilizando as tecnologias Next.js para o frontend e FastAPI com Python para o backend. 
+
+O modelo de recomendação foi desenvolvido com base no conceito de TF-IDF (Term Frequency-Inverse Document Frequency), amplamente usado em sistemas de recuperação de informações \cite{c5}. Os dados utilizados foram extraídos de conjuntos disponíveis na plataforma Kaggle, contendo informações detalhadas sobre gêneros, avaliações e hábitos de consumo de jogos. O sistema analisa bibliotecas de jogos de usuários da Steam, identifica padrões de comportamento e sugere títulos com alta probabilidade de engajamento.
+
+Este artigo está estruturado em quatro seções principais. Após esta introdução, a seção II apresenta a metodologia, detalhando as tecnologias, algoritmos e estrutura do sistema. A seção III discute os resultados obtidos, incluindo métricas de desempenho e a avaliação qualitativa do sistema. Por fim, a seção IV traz as conclusões, ressaltando contribuições, limitações e oportunidades para trabalhos futuros.
+
+\section{Método}
+
+O desenvolvimento do sistema de recomendação foi estruturado em três etapas principais: o processamento dos dados utilizando o modelo TF-IDF, a construção de uma API para interação com os dados da Steam e a exibição das recomendações na interface do usuário. A seguir, descrevemos cada etapa em detalhes.
+
+\subsection{Solução Adotada}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{steam-diagrama.png}
+    \caption{Diagrama da solução}
+    \label{fig:diagrama}
+\end{figure}
+
+A arquitetura do sistema foi projetada para realizar a recomendação de jogos de maneira eficiente, utilizando uma troca de mensagens bem definida entre os componentes representados na Figura ~\ref{fig:diagrama}. O frontend, implementado com Next.js, envia requisições ao backend para iniciar o processo de recomendação. No backend, o módulo central (CORE), desenvolvido em FastAPI, atua como intermediário entre o frontend, o módulo de IA e a API da Steam.
+
+O CORE comunica-se com a Steam API para obter informações sobre a biblioteca de jogos do usuário, considerando que a conta esteja configurada como pública. Após obter esses dados, o CORE transfere as informações ao módulo de IA, que utiliza o modelo baseado em TF-IDF para analisar os gêneros dos jogos presentes na biblioteca e gerar recomendações personalizadas. As recomendações são então retornadas ao CORE, que as envia de volta ao frontend para exibição ao usuário. Essa troca de mensagens garante modularidade e escalabilidade, permitindo que cada componente funcione de maneira independente, mas integrada.
+
+Essas escolhas permitiram a construção de uma solução robusta e adaptável, capaz de oferecer recomendações personalizadas e relevantes para os usuários da Steam.
+
+\subsection{TF-IDF: Fundamentos Teóricos}
+
+Para realizar a recomendação de jogos, foi utilizado o conceito de TF-IDF (*Term Frequency-Inverse Document Frequency*). O TF-IDF é uma métrica amplamente utilizada em mineração de textos e recuperação de informações. Seu objetivo principal é medir a relevância de um termo em um documento em relação a um conjunto de documentos. A métrica é calculada como o produto de duas componentes:
+\begin{itemize}
+    \item \textbf{TF (Frequência do Termo)}: Mede a frequência de um termo específico em um documento.
+    \item \textbf{IDF (Frequência Inversa do Documento)}: Avalia a importância do termo considerando sua distribuição em todos os documentos. Termos comuns, como artigos e preposições, recebem menor peso, enquanto termos raros recebem maior peso.
+\end{itemize}
+
+No contexto deste projeto, os gêneros dos jogos foram tratados como "termos", e cada jogo representava um "documento". Isso permitiu identificar jogos semelhantes com base na relevância dos gêneros compartilhados. O uso do TF-IDF garante que jogos com gêneros mais distintivos tenham maior probabilidade de aparecer entre as recomendações \cite{c6, c7}.
+
+\subsection{API de Recomendação}
+
+Uma API foi desenvolvida utilizando a tecnologia \textbf{FastAPI}, permitindo a interação com os dados do usuário e do sistema de recomendação. A API foi estruturada em três etapas principais:
+\begin{itemize}
+    \item \textbf{Coleta de Dados do Usuário}: A API consome os dados da conta pública do usuário na Steam, obtendo informações sobre sua biblioteca de jogos.
+    \item \textbf{Recomendações Baseadas em Gêneros}: Com base nos gêneros mais jogados pelo usuário, o modelo TF-IDF gera uma lista de jogos recomendados, considerando similaridades nos gêneros predominantes.
+    \item \textbf{Retorno dos Resultados}: Os resultados da recomendação são enviados para a interface do usuário, desenvolvida com \textbf{Next.js}, onde são exibidos de forma interativa.
+\end{itemize}
+
+A API utiliza endpoints específicos para comunicar-se tanto com os dados da Steam quanto com os modelos treinados localmente, garantindo uma integração eficiente entre os diferentes módulos do sistema.
+
+\subsection{Interfaces de Usuário}
+
+As recomendações geradas pela API são exibidas em uma interface desenvolvida com \textbf{Next.js}. Esta interface fornece uma visualização intuitiva e interativa das recomendações, permitindo ao usuário explorar os jogos sugeridos de acordo com suas preferências.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{steam-ia.png}
+    \caption{interface}
+    \label{fig:interface}
+\end{figure}
+
+\section{Resultados}
+
+\subsection{Conjunto de Dados}
+
+O conjunto de dados utilizado no projeto foi um arquivo \textit{.csv} fornecido pela plataforma Kaggle, contendo informações sobre 96.509 jogos disponíveis na Steam, com datas de lançamento variando de 1997 a 2024. O arquivo possui um tamanho total de 292,46 MB e inclui colunas detalhadas, como:
+\begin{itemize}
+    \item \textbf{Nome do jogo}: Título registrado na Steam.
+    \item \textbf{Gêneros}: Lista de categorias associadas ao jogo, como Ação, RPG, Estratégia, entre outros.
+    \item \textbf{Desenvolvedor e Editor}: Empresas responsáveis pela criação e distribuição.
+    \item \textbf{Data de Lançamento}: Ano e mês de disponibilização.
+    \item \textbf{Avaliações}: Pontuações atribuídas pela comunidade de jogadores.
+\end{itemize}
+
+Antes dos experimentos, foi realizado um pré-processamento nos dados, incluindo a remoção de duplicatas, tratamento de valores ausentes e normalização dos gêneros, garantindo consistência e qualidade nas análises.
+
+\section{Conclusão}
+
+O sistema de recomendação de jogos pautado no modelo TF-IDF cumpriu com sua premissa de recomendar os jogos à usuários \textit{steam} a partir de sua biblioteca e a lista de gêneros contidos na sua conta, porém, ainda há limitações e desafios. Uma das limitações é que a \textit{API} apenas comporta usuários que possuem contas públicas para acesso. Um dos desafios é em relação aos usuário que possuem uma gama muito alta de jogos variados.
+
+Como trabalhaos futuros, propomos a adição de novas métricas para um sistema de recomendação mais assertivo, utilizando as horas jogadas, avaliações e recomendações. Além disso também é proposto adicionar novas bases de biblioteca de jogos a partir de outras plafatormas como, \textit{Epic Games} e \textit{GoG}.
+
+\begin{thebibliography}{99}
+
+\bibitem{c1} L. R. West and M. L. Wood, ``Global Gaming Market to Hit \$300 Billion by 2026,'' *Gaming Industry Review*, vol. 48, no. 7, pp. 32–35, 2021.
+\bibitem{c2} P. Resnick and H. R. Varian, ``Recommender Systems,'' *Communications of the ACM*, vol. 40, no. 3, pp. 56–58, 1997.
+\bibitem{c3} J. L. Herlocker, J. A. Konstan, and J. Riedl, ``Explaining collaborative filtering recommendations,'' in *Proc. ACM Conf. Computer-Supported Cooperative Work*, 2000, pp. 241–250.
+\bibitem{c4} K. Verbert et al., ``Dataset-Driven Research to Support Learning and Teaching,'' *IEEE Trans. Learning Technologies*, vol. 10, no. 1, pp. 3–9, Jan.–Mar. 2017.
+\bibitem{c5} G. Salton and C. Buckley, ``Term-Weighting Approaches in Automatic Text Retrieval,'' *Information Processing and Management*, vol. 24, no. 5, pp. 513–523, 1988.
+
+\bibitem{c6} G. Salton and C. Buckley, ``Term-Weighting Approaches in Automatic Text Retrieval,'' \textit{Information Processing and Management}, vol. 24, no. 5, pp. 513–523, 1988.
+\bibitem{c7} A. Singhal, ``Modern Information Retrieval: A Brief Overview,'' \textit{IEEE Data Engineering Bulletin}, vol. 24, no. 4, pp. 35–43, 2001.
+
+
+\end{thebibliography}
+
+\end{document}
