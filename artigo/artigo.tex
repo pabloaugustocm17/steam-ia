@@ -32,7 +32,7 @@ pabloaugustocm@gmail.com}
 \maketitle
 
 \begin{abstract}
-Este trabalho apresenta um sistema de recomendação de jogos  desenvolvido para analisar bibliotecas de usuários da \textit{Steam} e sugerir títulos que se adaptam ao que o usuário normalmente consome. Utilizando o modelo TF-IDF e tecnologias como \textit{Next.js} e \textit{FastAPI}, o sistema utiliza dados da \textit{API} da \textit{Steam} para gerar recomendações com base em gêneros dos jogos. Dados de um conjunto extenso extraído da plataforma \textit{Kaggle} foram utilizados para treinar a inteligência artificial. Os resultados demonstram a solução em propor títulos semelhantes aos consumidos.
+Este trabalho apresenta o desenvolvimento de um sistema de recomendação de jogos baseado em inteligência artificial, projetado para sugerir títulos relevantes a partir do perfil de consumo de usuários da Steam. Utilizando o modelo TF-IDF (Term Frequency-Inverse Document Frequency) e uma integração entre Next.js e FastAPI, o sistema analisa dados obtidos da API da Steam, identificando padrões nos gêneros de jogos mais apreciados. O treinamento do modelo foi realizado com um conjunto de dados robusto extraído da plataforma Kaggle, contendo informações detalhadas sobre mais de 96.000 títulos. Os resultados indicam que o sistema é capaz de fornecer recomendações personalizadas e relevantes, destacando-se pela capacidade de adaptação ao amplo espectro de preferências do usuário. Este trabalho explora as possibilidades do uso de IA para transformar a experiência de descoberta de jogos digitais, ao mesmo tempo que discute limitações e caminhos para futuras melhorias.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -115,11 +115,27 @@ O conjunto de dados utilizado no projeto foi um arquivo \textit{.csv} fornecido 
 
 Antes dos experimentos, foi realizado um pré-processamento nos dados, incluindo a remoção de duplicatas, tratamento de valores ausentes e normalização dos gêneros, garantindo consistência e qualidade nas análises.
 
+\subsection{Distribuição das Pontuações de Similaridade}
+
+A análise das pontuações de similaridade geradas pelo sistema de recomendação revelou uma distribuição amplamente concentrada em valores baixos, como ilustrado na Figura~\ref{fig:similarity_distribution}. Essa distribuição reflete as relações entre os itens do conjunto de dados e os critérios fornecidos, como gêneros e categorias.
+
+\begin{figure}[h!] \centering \includegraphics[width=\linewidth]{Distribuição das Pontuações de Similaridade.png} \caption{Distribuição das pontuações de similaridade calculadas pelo sistema de recomendação.} \label{fig:similarity_distribution} \end{figure}
+
+As principais observações são: \begin{itemize} \item \textbf{Concentração em valores baixos}: A maior parte das pontuações encontra-se próxima de zero, indicando que muitos itens do conjunto possuem baixa similaridade em relação aos critérios fornecidos. Isso pode ser atribuído à alta diversidade dos dados analisados. \item \textbf{Cauda longa}: Há uma diminuição progressiva na frequência à medida que as pontuações aumentam. Embora valores altos de similaridade sejam menos comuns, eles correspondem às recomendações mais específicas e relevantes. \item \textbf{Frequência elevada de similaridades nulas}: Um grande número de itens possui pontuação próxima de zero, refletindo a baixa densidade de itens similares em relação ao espaço analisado. \end{itemize}
+
+Esses resultados mostram que o sistema é capaz de identificar itens altamente relevantes dentro de um grande conjunto de dados, mas a predominância de valores baixos evidencia a diversidade do conjunto de jogos e a especificidade das categorias e gêneros analisados. Essa concentração de valores baixos sugere que o sistema pode ser ajustado para oferecer recomendações mais diversas ao relaxar os critérios de similaridade ou combinar abordagens complementares.
+
+
+
+Esses passos futuros podem ajudar a refinar o modelo e adaptá-lo a diferentes contextos de uso, garantindo uma experiência de recomendação mais personalizada e eficiente.
+
+
+
 \section{Conclusão}
 
 O sistema de recomendação de jogos pautado no modelo TF-IDF cumpriu com sua premissa de recomendar os jogos à usuários \textit{steam} a partir de sua biblioteca e a lista de gêneros contidos na sua conta, porém, ainda há limitações e desafios. Uma das limitações é que a \textit{API} apenas comporta usuários que possuem contas públicas para acesso. Um dos desafios é em relação aos usuário que possuem uma gama muito alta de jogos variados.
 
-Como trabalhaos futuros, propomos a adição de novas métricas para um sistema de recomendação mais assertivo, utilizando as horas jogadas, avaliações e recomendações. Além disso também é proposto adicionar novas bases de biblioteca de jogos a partir de outras plafatormas como, \textit{Epic Games} e \textit{GoG}.
+Como trabalhaos futuros, é proposto a adição de novas métricas para um sistema de recomendação mais assertivo, utilizando as horas jogadas, avaliações e recomendações. Além disso também é proposto adicionar novas bases de biblioteca de jogos a partir de outras plafatormas como, \textit{Epic Games} e \textit{GoG}.
 
 \begin{thebibliography}{99}
 
